@@ -6,6 +6,9 @@ GET {{endpoint}}/hello/
 GET {{endpoint}}/spaces?spaceId=e16b2c37-077f-4f93-9c88-2d4a248be71d
 ###
 
+GET {{endpoint}}/spaces?location=London
+###
+
 POST {{endpoint}}/spaces/
 Content-Type: application/json
 

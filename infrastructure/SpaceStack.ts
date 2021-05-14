@@ -1,17 +1,18 @@
 import { Stack, StackProps } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-import { Code, Function as LambdaFunction, Runtime } from 'aws-cdk-lib/lib/aws-lambda';
 import { join } from 'path';
 import { LambdaIntegration, RestApi } from 'aws-cdk-lib/lib/aws-apigateway'
 import { GenericTable } from './GenericTable';
 import { NodejsFunction } from 'aws-cdk-lib/lib/aws-lambda-nodejs';
 import { PolicyStatement } from 'aws-cdk-lib/lib/aws-iam';
+import { AuthorizerWrapper } from './auth/AuthorizerWrapper';
 
 
 
 export class SpaceStack extends Stack {
 
     private api = new RestApi(this, 'SpaceApi');
+    private authorizer: AuthorizerWrapper;
 
     private spacesTable = new GenericTable(this,{
         tableName: 'SpacesTable',
@@ -25,6 +26,8 @@ export class SpaceStack extends Stack {
 
     constructor(scope: Construct, id: string, props: StackProps) {
         super(scope, id, props)
+
+        this.authorizer = new AuthorizerWrapper(this, this.api);
 
         const helloLambdaNodeJs = new NodejsFunction(this, 'helloLambdaNodeJs', {
             entry: (join(__dirname, '..', 'services', 'node-lambda', 'hello.ts')),

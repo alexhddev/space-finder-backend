@@ -17,7 +17,7 @@ export class SpaceStack extends Stack {
     private suffix: string;
     private spacesPhotosBucket: Bucket;
 
-    private spacesTable = new GenericTable(this,{
+    private spacesTable = new GenericTable(this, {
         tableName: 'SpacesTable',
         primaryKey: 'spaceId',
         createLambdaPath: 'Create',
@@ -25,14 +25,19 @@ export class SpaceStack extends Stack {
         updateLambdaPath: 'Update',
         deleteLambdaPath: 'Delete',
         secondaryIndexes: ['location']
-    } )
+    })
 
     constructor(scope: Construct, id: string, props: StackProps) {
         super(scope, id, props)
 
-        this.authorizer = new AuthorizerWrapper(this, this.api);
         this.initializeSuffix();
         this.initializeSpacesPhotosBucket();
+
+        this.authorizer = new AuthorizerWrapper(
+            this,
+            this.api,
+            this.spacesPhotosBucket.bucketArn + '/*');
+
 
         const helloLambdaNodeJs = new NodejsFunction(this, 'helloLambdaNodeJs', {
             entry: (join(__dirname, '..', 'services', 'node-lambda', 'hello.ts')),
@@ -65,16 +70,16 @@ export class SpaceStack extends Stack {
         spaceResource.addMethod('DELETE', this.spacesTable.deleteLambdaIntegration);
     }
 
-    private initializeSuffix(){
+    private initializeSuffix() {
         const shortStackId = Fn.select(2, Fn.split('/', this.stackId));
         const Suffix = Fn.select(4, Fn.split('-', shortStackId));
         this.suffix = Suffix;
     }
-    private initializeSpacesPhotosBucket(){
+    private initializeSpacesPhotosBucket() {
         this.spacesPhotosBucket = new Bucket(this, 'spaces-photos', {
             bucketName: 'spaces-photos-' + this.suffix,
             cors: [{
-                allowedMethods:[
+                allowedMethods: [
                     HttpMethods.HEAD,
                     HttpMethods.GET,
                     HttpMethods.PUT

@@ -11,16 +11,18 @@ export class IdentityPoolWrapper {
     private scope: Construct;
     private userPool: UserPool;
     private userPoolClient: UserPoolClient;
+    private photosBucketArn: string;
 
     private identityPool: CfnIdentityPool;
     private authenticatedRole: Role;
     private unAuthenticatedRole: Role;
     public adminRole: Role;
 
-    constructor(scope: Construct, userPool: UserPool, userPoolClient: UserPoolClient) {
+    constructor(scope: Construct, userPool: UserPool, userPoolClient: UserPoolClient, photosBucketArn: string) {
         this.scope = scope;
         this.userPool = userPool;
         this.userPoolClient = userPoolClient;
+        this.photosBucketArn = photosBucketArn;
         this.initialize();
     }
 
@@ -86,9 +88,10 @@ export class IdentityPoolWrapper {
         this.adminRole.addToPolicy(new PolicyStatement({
             effect: Effect.ALLOW,
             actions: [
-                's3:ListAllMyBuckets'
+                's3:PutObject',
+                's3:PutObjectAcl'
             ],
-            resources: ['*']
+            resources: [this.photosBucketArn]
         }))
     
     }

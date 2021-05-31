@@ -29,19 +29,15 @@ export class SpaceStack extends Stack {
 
     constructor(scope: Construct, id: string, props: StackProps) {
         super(scope, id, props)
-
-        this.authorizer = new AuthorizerWrapper(this, this.api);
+        
         this.initializeSuffix();
         this.initializeSpacesPhotosBucket();
+        this.authorizer = new AuthorizerWrapper(
+            this,
+            this.api,
+            this.spacesPhotosBucket.bucketArn + '/*'
+            );
 
-        const helloLambdaNodeJs = new NodejsFunction(this, 'helloLambdaNodeJs', {
-            entry: (join(__dirname, '..', 'services', 'node-lambda', 'hello.ts')),
-            handler: 'handler'
-        });
-        const s3ListPolicy = new PolicyStatement();
-        s3ListPolicy.addActions('s3:ListAllMyBuckets');
-        s3ListPolicy.addResources('*')
-        helloLambdaNodeJs.addToRolePolicy(s3ListPolicy);
 
         const optionsWithAuthorizer: MethodOptions = {
             authorizationType: AuthorizationType.COGNITO,
@@ -49,13 +45,6 @@ export class SpaceStack extends Stack {
                 authorizerId: this.authorizer.authorizer.authorizerId
             }
         }
-
-
-        // Hello Api lambda integration:
-        const helloLambdaIntegration = new LambdaIntegration(helloLambdaNodeJs)
-        const helloLambdaResource = this.api.root.addResource('hello');
-        helloLambdaResource.addMethod('GET', helloLambdaIntegration, optionsWithAuthorizer);
-
 
         //Spaces API integrations:
         const spaceResource = this.api.root.addResource('spaces');

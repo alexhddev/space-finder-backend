@@ -36,7 +36,7 @@ export class SpaceStack extends Stack {
         this.authorizer = new AuthorizerWrapper(
             this,
             this.api,
-            this.spacesPhotosBucket.bucketArn + '/*'
+            this.spacesPhotosBucket.bucketArn
             );
         new WebAppDeployment(this, this.suffix);
 

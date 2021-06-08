@@ -43,7 +43,7 @@ export class WebAppDeployment {
 
         const cloudFront = new CloudFrontWebDistribution(
             this.stack,
-            'space-app-web-destribution', {
+            'space-app-web-distribution', {
                 originConfigs:[
                     {
                         behaviors: [

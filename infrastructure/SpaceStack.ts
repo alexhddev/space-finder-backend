@@ -13,7 +13,7 @@ export class SpaceStack extends Stack {
     private suffix: string;
     private spacesPhotosBucket: Bucket;
 
-    private spacesTable = new GenericTable(this,{
+    private spacesTable = new GenericTable(this, {
         tableName: 'SpacesTable',
         primaryKey: 'spaceId',
         createLambdaPath: 'Create',
@@ -21,11 +21,21 @@ export class SpaceStack extends Stack {
         updateLambdaPath: 'Update',
         deleteLambdaPath: 'Delete',
         secondaryIndexes: ['location']
-    } )
+    })
+
+    private reservationsTable = new GenericTable(this, {
+        tableName: 'ReservationsTable',
+        primaryKey: 'reservationId',
+        createLambdaPath: 'Create',
+        readLambdaPath: 'Read',
+        updateLambdaPath: 'Update',
+        deleteLambdaPath: 'Delete',
+        secondaryIndexes: ['user']
+    })
 
     constructor(scope: Construct, id: string, props: StackProps) {
         super(scope, id, props)
-        
+
         this.initializeSuffix();
         this.initializeSpacesPhotosBucket();
         this.authorizer = new AuthorizerWrapper(
@@ -48,18 +58,25 @@ export class SpaceStack extends Stack {
         spaceResource.addMethod('GET', this.spacesTable.readLambdaIntegration, optionsWithAuthorizer);
         spaceResource.addMethod('PUT', this.spacesTable.updateLambdaIntegration, optionsWithAuthorizer);
         spaceResource.addMethod('DELETE', this.spacesTable.deleteLambdaIntegration, optionsWithAuthorizer);
+
+        //Reservations API integrations:
+        const reservationResource = this.api.root.addResource('reservations');
+        reservationResource.addMethod('POST', this.reservationsTable.createLambdaIntegration, optionsWithAuthorizer);
+        reservationResource.addMethod('GET', this.reservationsTable.readLambdaIntegration, optionsWithAuthorizer);
+        reservationResource.addMethod('PUT', this.reservationsTable.updateLambdaIntegration, optionsWithAuthorizer);
+        reservationResource.addMethod('DELETE', this.reservationsTable.deleteLambdaIntegration, optionsWithAuthorizer);
     }
 
-    private initializeSuffix(){
+    private initializeSuffix() {
         const shortStackId = Fn.select(2, Fn.split('/', this.stackId));
         const Suffix = Fn.select(4, Fn.split('-', shortStackId));
         this.suffix = Suffix;
     }
-    private initializeSpacesPhotosBucket(){
+    private initializeSpacesPhotosBucket() {
         this.spacesPhotosBucket = new Bucket(this, 'spaces-photos', {
             bucketName: 'spaces-photos-' + this.suffix,
             cors: [{
-                allowedMethods:[
+                allowedMethods: [
                     HttpMethods.HEAD,
                     HttpMethods.GET,
                     HttpMethods.PUT

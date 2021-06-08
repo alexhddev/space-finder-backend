@@ -1,0 +1,36 @@
+@endpoint = https://v1brla82hd.execute-api.eu-west-1.amazonaws.com/prod/reservations/
+@token = eyJraWQiOiJ6cGtDUjRiZVJXak1hY1wveDdUR0lKMTdaUjVmNUVrSEZaZjMyZlwvZ3ZEbmc9IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiI0MTJhMGQ4ZC1jMzFmLTRkNDEtOTU0NS01MmY3ODAzNWYxOTIiLCJjb2duaXRvOmdyb3VwcyI6WyJhZG1pbnMiXSwiZW1haWxfdmVyaWZpZWQiOnRydWUsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC5ldS13ZXN0LTEuYW1hem9uYXdzLmNvbVwvZXUtd2VzdC0xX2dSSVVvT2RMeCIsImNvZ25pdG86dXNlcm5hbWUiOiJiYXJvc2FudTIiLCJjb2duaXRvOnJvbGVzIjpbImFybjphd3M6aWFtOjoxNTE4NzM3NTYwMTY6cm9sZVwvU3BhY2VGaW5kZXItQ29nbml0b0FkbWluUm9sZTRDMTBGQkE0LVpPRUhCNEI3TVAzVCJdLCJhdWQiOiIzMzV2bWE1am1sdWRvNDJtbjI4OTVjdTViaCIsImV2ZW50X2lkIjoiZGY4ZGZkZWMtNDVkOC00MTY1LThiYWEtMzcwNTcwYWQzYjU3IiwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE2MjMxNjA1MzcsImV4cCI6MTYyMzE2NDEzNywiaWF0IjoxNjIzMTYwNTM3LCJlbWFpbCI6ImJhcm9zYW51MkBnbWFpbC5jb20ifQ.MR7h6YAtkUUKI3lM29uC22Llm0e9wQqSMnDMMGxtxDYSNEocEb9Wql_A7Zb5u8YLhifwFCO-GTi0h5hB6AEgODJYX7rahBrhJj6Xof0_uFWqYrpebaSmZWLm-WN8_-ubYmL5xHaHSKLxH2gIDhOo3YKogrIsQjw8JbV1eqIbcwiy__7rb94UTuyvU-MGWMHnR-gepxHj8PUszFzaX1Bh0s7hh5A5P7qq-WPViq7yWHiH8FaELxVOHQYMNXsEYup6sj-yhw5c5YKqFLMLCSCNf4WjPYCbMXS1ME9jt25uvp1_MZwYCb4kPO4vSImePqpN8zPC0A4BQNOT5wk1mDTahw
+
+GET {{endpoint}}
+Authorization: {{token}}
+###
+
+POST {{endpoint}}
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+    "spaceId": "123",
+    "user": "sefu"
+}
+###
+
+GET {{endpoint}}?reservationId=kpva35d8lt
+Authorization: {{token}}
+###
+
+
+
+PUT {{endpoint}}?reservationId=kpva35d8lt
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+    "state": "PENDING"
+}
+###
+
+DELETE  {{endpoint}}?reservationId=kpva35d8lt
+Authorization: {{token}}
+###
+

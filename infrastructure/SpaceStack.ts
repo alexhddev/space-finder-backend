@@ -36,8 +36,7 @@ export class SpaceStack extends Stack {
         this.authorizer = new AuthorizerWrapper(
             this,
             this.api,
-            this.spacesPhotosBucket.bucketArn
-            );
+            this.spacesPhotosBucket.bucketArn);
         new WebAppDeployment(this, this.suffix);
 
 
@@ -50,10 +49,10 @@ export class SpaceStack extends Stack {
 
         //Spaces API integrations:
         const spaceResource = this.api.root.addResource('spaces');
-        spaceResource.addMethod('POST', this.spacesTable.createLambdaIntegration);
-        spaceResource.addMethod('GET', this.spacesTable.readLambdaIntegration);
-        spaceResource.addMethod('PUT', this.spacesTable.updateLambdaIntegration);
-        spaceResource.addMethod('DELETE', this.spacesTable.deleteLambdaIntegration);
+        spaceResource.addMethod('POST', this.spacesTable.createLambdaIntegration, optionsWithAuthorizer);
+        spaceResource.addMethod('GET', this.spacesTable.readLambdaIntegration, optionsWithAuthorizer);
+        spaceResource.addMethod('PUT', this.spacesTable.updateLambdaIntegration, optionsWithAuthorizer);
+        spaceResource.addMethod('DELETE', this.spacesTable.deleteLambdaIntegration, optionsWithAuthorizer);
     }
 
     private initializeSuffix(){

@@ -1,6 +1,6 @@
 import { CfnOutput, Fn, Stack, StackProps } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-import { AuthorizationType, MethodOptions, RestApi } from 'aws-cdk-lib/lib/aws-apigateway'
+import { AuthorizationType, Cors, MethodOptions, RestApi } from 'aws-cdk-lib/lib/aws-apigateway'
 import { GenericTable } from './GenericTable';
 import { AuthorizerWrapper } from './auth/AuthorizerWrapper';
 import { Bucket, HttpMethods } from 'aws-cdk-lib/lib/aws-s3';
@@ -8,7 +8,12 @@ import { WebAppDeployment } from './WebAppDeployment';
 
 export class SpaceStack extends Stack {
 
-    private api = new RestApi(this, 'SpaceApi');
+    private api = new RestApi(this, 'SpaceApi', {
+        defaultCorsPreflightOptions :{
+            allowOrigins: Cors.ALL_METHODS,
+            allowMethods: Cors.ALL_ORIGINS
+        }
+    });
     private authorizer: AuthorizerWrapper;
     private suffix: string;
     private spacesPhotosBucket: Bucket;

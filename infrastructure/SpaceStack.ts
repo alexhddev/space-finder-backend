@@ -1,15 +1,10 @@
 import { CfnOutput, Fn, Stack, StackProps } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-import { join } from 'path';
-import { AuthorizationType, LambdaIntegration, MethodOptions, RestApi } from 'aws-cdk-lib/lib/aws-apigateway'
+import { AuthorizationType, MethodOptions, RestApi } from 'aws-cdk-lib/lib/aws-apigateway'
 import { GenericTable } from './GenericTable';
-import { NodejsFunction } from 'aws-cdk-lib/lib/aws-lambda-nodejs';
-import { PolicyStatement } from 'aws-cdk-lib/lib/aws-iam';
 import { AuthorizerWrapper } from './auth/AuthorizerWrapper';
 import { Bucket, HttpMethods } from 'aws-cdk-lib/lib/aws-s3';
 import { WebAppDeployment } from './WebAppDeployment';
-
-
 
 export class SpaceStack extends Stack {
 

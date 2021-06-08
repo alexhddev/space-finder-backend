@@ -4,10 +4,6 @@ import { Bucket } from "aws-cdk-lib/lib/aws-s3";
 import { BucketDeployment, Source } from "aws-cdk-lib/lib/aws-s3-deployment";
 import { join } from 'path';
 
-
-
-
-
 export class WebAppDeployment {
 
     private stack: Stack;

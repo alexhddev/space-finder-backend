@@ -1,6 +1,6 @@
 import { CfnOutput, Fn, Stack, StackProps } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-import { AuthorizationType, Cors, MethodOptions, RestApi } from 'aws-cdk-lib/lib/aws-apigateway'
+import { AuthorizationType, Cors, MethodOptions, ResourceOptions, RestApi } from 'aws-cdk-lib/lib/aws-apigateway'
 import { GenericTable } from './GenericTable';
 import { AuthorizerWrapper } from './auth/AuthorizerWrapper';
 import { Bucket, HttpMethods } from 'aws-cdk-lib/lib/aws-s3';
@@ -8,12 +8,7 @@ import { WebAppDeployment } from './WebAppDeployment';
 
 export class SpaceStack extends Stack {
 
-    private api = new RestApi(this, 'SpaceApi', {
-        defaultCorsPreflightOptions :{
-            allowOrigins: Cors.ALL_METHODS,
-            allowMethods: Cors.ALL_ORIGINS
-        }
-    });
+    private api = new RestApi(this, 'SpaceApi');
     private authorizer: AuthorizerWrapper;
     private suffix: string;
     private spacesPhotosBucket: Bucket;
@@ -56,16 +51,22 @@ export class SpaceStack extends Stack {
                 authorizerId: this.authorizer.authorizer.authorizerId
             }
         }
+        const optionsWithCors:ResourceOptions = {
+            defaultCorsPreflightOptions : {
+                allowOrigins: Cors.ALL_ORIGINS,
+                allowMethods: Cors.ALL_METHODS
+            }
+        }
 
         //Spaces API integrations:
-        const spaceResource = this.api.root.addResource('spaces');
+        const spaceResource = this.api.root.addResource('spaces', optionsWithCors);
         spaceResource.addMethod('POST', this.spacesTable.createLambdaIntegration, optionsWithAuthorizer);
         spaceResource.addMethod('GET', this.spacesTable.readLambdaIntegration, optionsWithAuthorizer);
         spaceResource.addMethod('PUT', this.spacesTable.updateLambdaIntegration, optionsWithAuthorizer);
         spaceResource.addMethod('DELETE', this.spacesTable.deleteLambdaIntegration, optionsWithAuthorizer);
 
         //Reservations API integrations:
-        const reservationResource = this.api.root.addResource('reservations');
+        const reservationResource = this.api.root.addResource('reservations', optionsWithCors);
         reservationResource.addMethod('POST', this.reservationsTable.createLambdaIntegration, optionsWithAuthorizer);
         reservationResource.addMethod('GET', this.reservationsTable.readLambdaIntegration, optionsWithAuthorizer);
         reservationResource.addMethod('PUT', this.reservationsTable.updateLambdaIntegration, optionsWithAuthorizer);

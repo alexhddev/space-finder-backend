@@ -1,7 +1,8 @@
 import { CfnOutput } from "aws-cdk-lib";
 import { UserPool, UserPoolClient, CfnIdentityPool, CfnIdentityPoolRoleAttachment } from "aws-cdk-lib/lib/aws-cognito";
-import { Effect, FederatedPrincipal, PolicyStatement, Role } from "aws-cdk-lib/lib/aws-iam";
+import { FederatedPrincipal, Role } from "aws-cdk-lib/lib/aws-iam";
 import { Construct } from "constructs";
+import { Policies } from "../Policies";
 
 
 
@@ -11,18 +12,18 @@ export class IdentityPoolWrapper {
     private scope: Construct;
     private userPool: UserPool;
     private userPoolClient: UserPoolClient;
-    private photoBucketArn: string
+    private policies: Policies;
 
     private identityPool: CfnIdentityPool;
     private authenticatedRole: Role;
     private unAuthenticatedRole: Role;
     public adminRole: Role;
 
-    constructor(scope: Construct, userPool: UserPool, userPoolClient: UserPoolClient, photoBucketArn: string) {
+    constructor(scope: Construct, userPool: UserPool, userPoolClient: UserPoolClient, policies: Policies) {
         this.scope = scope;
         this.userPool = userPool;
         this.userPoolClient = userPoolClient;
-        this.photoBucketArn = photoBucketArn
+        this.policies = policies;
         this.initialize();
     }
 
@@ -58,6 +59,7 @@ export class IdentityPoolWrapper {
                 'sts:AssumeRoleWithWebIdentity'
             )
         });
+        this.authenticatedRole.addToPolicy(this.policies.uploadProfilePhoto);
 
         this.unAuthenticatedRole = new Role(this.scope, 'CognitoDefaultUnAuthenticatedRole', {
             assumedBy: new FederatedPrincipal('cognito-identity.amazonaws.com', {
@@ -85,14 +87,8 @@ export class IdentityPoolWrapper {
             )
         });
 
-        this.adminRole.addToPolicy(new PolicyStatement({
-            effect: Effect.ALLOW,
-            actions: [
-                's3:PutObject',
-                's3:PutObjectAcl'
-            ],
-            resources: [this.photoBucketArn + '/*']
-        }))
+        this.adminRole.addToPolicy(this.policies.uploadSpacePhotos);
+        this.adminRole.addToPolicy(this.policies.uploadProfilePhoto);
     
     }
 

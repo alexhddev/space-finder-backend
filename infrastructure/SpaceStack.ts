@@ -5,6 +5,7 @@ import { GenericTable } from './GenericTable';
 import { AuthorizerWrapper } from './auth/AuthorizerWrapper';
 import { Bucket, HttpMethods } from 'aws-cdk-lib/lib/aws-s3';
 import { WebAppDeployment } from './WebAppDeployment';
+import { Policies } from './Policies';
 
 export class SpaceStack extends Stack {
 
@@ -12,6 +13,8 @@ export class SpaceStack extends Stack {
     private authorizer: AuthorizerWrapper;
     private suffix: string;
     private spacesPhotosBucket: Bucket;
+    private profilePhotosBucket: Bucket;
+    private policies: Policies;
 
     private spacesTable = new GenericTable(this, {
         tableName: 'SpacesTable',
@@ -38,10 +41,12 @@ export class SpaceStack extends Stack {
 
         this.initializeSuffix();
         this.initializeSpacesPhotosBucket();
+        this.initializeProfilePhotosBucket();
+        this.policies = new Policies(this.spacesPhotosBucket, this.profilePhotosBucket);
         this.authorizer = new AuthorizerWrapper(
             this,
             this.api,
-            this.spacesPhotosBucket.bucketArn);
+            this.policies);
         new WebAppDeployment(this, this.suffix);
 
 
@@ -93,6 +98,24 @@ export class SpaceStack extends Stack {
         });
         new CfnOutput(this, 'spaces-photos-bucket-name', {
             value: this.spacesPhotosBucket.bucketName
+        })
+    }
+
+    private initializeProfilePhotosBucket() {
+        this.profilePhotosBucket = new Bucket(this, 'profile-photos', {
+            bucketName: 'profile-photos-' + this.suffix,
+            cors: [{
+                allowedMethods: [
+                    HttpMethods.HEAD,
+                    HttpMethods.GET,
+                    HttpMethods.PUT
+                ],
+                allowedOrigins: ['*'],
+                allowedHeaders: ['*']
+            }]
+        });
+        new CfnOutput(this, 'profile-photos-bucket-name', {
+            value: this.profilePhotosBucket.bucketName
         })
     }
 

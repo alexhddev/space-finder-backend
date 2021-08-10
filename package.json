@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -18,11 +18,15 @@
   },
   "homepage": "https://github.com/barosanuemailtest/space-finder-backend#readme",
   "devDependencies": {
+    "@aws-cdk/assert": "^1.117.0",
+    "@types/jest": "^26.0.24",
     "@types/node": "^15.0.1",
     "aws-cdk": "2.0.0-rc.1",
     "aws-cdk-lib": "^2.0.0-rc.1",
     "constructs": "^10.0.5",
     "esbuild": "^0.11.18",
+    "jest": "^27.0.6",
+    "ts-jest": "^27.0.4",
     "ts-node": "^9.1.1",
     "typescript": "^4.2.4"
   },

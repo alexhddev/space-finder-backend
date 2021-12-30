@@ -1,7 +1,7 @@
 import { CfnOutput, Stack } from "aws-cdk-lib";
-import { CloudFrontWebDistribution } from "aws-cdk-lib/lib/aws-cloudfront";
-import { Bucket } from "aws-cdk-lib/lib/aws-s3";
-import { BucketDeployment, Source } from "aws-cdk-lib/lib/aws-s3-deployment";
+import { CloudFrontWebDistribution } from "aws-cdk-lib/aws-cloudfront";
+import { Bucket } from "aws-cdk-lib/aws-s3";
+import { BucketDeployment, Source } from "aws-cdk-lib/aws-s3-deployment";
 import { join } from 'path';
 
 export class WebAppDeployment {

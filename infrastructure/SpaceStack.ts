@@ -1,9 +1,9 @@
 import { CfnOutput, Fn, Stack, StackProps } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-import { AuthorizationType, Cors, MethodOptions, ResourceOptions, RestApi } from 'aws-cdk-lib/lib/aws-apigateway'
+import { AuthorizationType, Cors, MethodOptions, ResourceOptions, RestApi } from 'aws-cdk-lib/aws-apigateway'
 import { GenericTable } from './GenericTable';
 import { AuthorizerWrapper } from './auth/AuthorizerWrapper';
-import { Bucket, HttpMethods } from 'aws-cdk-lib/lib/aws-s3';
+import { Bucket, HttpMethods } from 'aws-cdk-lib/aws-s3';
 import { WebAppDeployment } from './WebAppDeployment';
 import { Policies } from './Policies';
 

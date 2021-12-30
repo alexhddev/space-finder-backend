@@ -18,22 +18,22 @@
   },
   "homepage": "https://github.com/barosanuemailtest/space-finder-backend#readme",
   "devDependencies": {
-    "@aws-cdk/assert": "^1.117.0",
-    "@types/jest": "^26.0.24",
-    "@types/node": "^15.0.1",
-    "aws-cdk": "2.0.0-rc.1",
-    "aws-cdk-lib": "^2.0.0-rc.1",
-    "constructs": "^10.0.5",
-    "esbuild": "^0.11.18",
-    "jest": "^27.0.6",
-    "ts-jest": "^27.0.4",
-    "ts-node": "^9.1.1",
-    "typescript": "^4.2.4"
+    "@aws-cdk/assert": "*",
+    "@types/jest": "*",
+    "@types/node": "*",
+    "aws-cdk": "*",
+    "aws-cdk-lib": "*",
+    "constructs": "*",
+    "esbuild": "*",
+    "jest": "*",
+    "ts-jest": "*",
+    "ts-node": "*",
+    "typescript": "*"
   },
   "dependencies": {
-    "@aws-amplify/auth": "^3.4.32",
-    "@types/aws-lambda": "^8.10.76",
-    "aws-amplify": "^4.0.0",
-    "aws-sdk": "^2.900.0"
+    "@aws-amplify/auth": "*",
+    "@types/aws-lambda": "*",
+    "aws-amplify": "*",
+    "aws-sdk": "*"
   }
 }

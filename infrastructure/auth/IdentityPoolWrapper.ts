@@ -1,6 +1,6 @@
 import { CfnOutput } from "aws-cdk-lib";
-import { UserPool, UserPoolClient, CfnIdentityPool, CfnIdentityPoolRoleAttachment } from "aws-cdk-lib/lib/aws-cognito";
-import { FederatedPrincipal, Role } from "aws-cdk-lib/lib/aws-iam";
+import { UserPool, UserPoolClient, CfnIdentityPool, CfnIdentityPoolRoleAttachment } from "aws-cdk-lib/aws-cognito";
+import { FederatedPrincipal, Role } from "aws-cdk-lib/aws-iam";
 import { Construct } from "constructs";
 import { Policies } from "../Policies";
 

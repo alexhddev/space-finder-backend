@@ -1,5 +1,5 @@
-import { Effect, PolicyStatement } from "aws-cdk-lib/lib/aws-iam";
-import { Bucket } from "aws-cdk-lib/lib/aws-s3";
+import { Effect, PolicyStatement } from "aws-cdk-lib/aws-iam";
+import { Bucket } from "aws-cdk-lib/aws-s3";
 
 export class Policies {
 

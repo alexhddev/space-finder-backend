@@ -1,7 +1,7 @@
 import { Stack } from 'aws-cdk-lib';
-import { AttributeType, Table } from 'aws-cdk-lib/lib/aws-dynamodb';
-import { NodejsFunction } from 'aws-cdk-lib/lib/aws-lambda-nodejs';
-import { LambdaIntegration } from 'aws-cdk-lib/lib/aws-apigateway';
+import { AttributeType, Table } from 'aws-cdk-lib/aws-dynamodb';
+import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
+import { LambdaIntegration } from 'aws-cdk-lib/aws-apigateway';
 import { join } from 'path'
 
 export interface TableProps {

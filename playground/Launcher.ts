@@ -6,7 +6,11 @@ import { join } from 'path'
 class PlayStack extends Stack {
 
     public initialize(){
-
+        new NodejsFunction(this, 'PlayLambda' ,{
+            entry: (join(__dirname, 'lambdas', 'PlayLambda.ts')),
+            handler: 'handler',
+            functionName: 'PlayLambda',
+        })
 
     }
 }
